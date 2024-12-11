@@ -31,6 +31,8 @@ $router->addRoute('POST', '/login', 'LoginController@login', [GuestMiddleware::c
 $router->addRoute('GET', '/dashboard', 'DashboardController@index', [LoginCheckMiddleware::class]);
 $router->addRoute('GET', '/logout', 'DashboardController@logout', [LoginCheckMiddleware::class]);
 $router->addRoute('GET', '/user-list', 'AdminController@user_list', [AuthAdminRoleMiddleware::class]);
+$router->addRoute('GET', '/edit-user/{param}', "AdminController@edit_user_by_id", [AuthAdminRoleMiddleware::class]);
+$router->addRoute('POST', "/edit-user", 'AdminController@edit_user', [AuthAdminRoleMiddleware::class]);
 // Parse the current URL
 $requestUri = $_SERVER['REQUEST_URI']; //strtok($_SERVER['REQUEST_URI'], '?');
 $requestMethod = $_SERVER['REQUEST_METHOD'];

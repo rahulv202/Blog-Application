@@ -30,13 +30,23 @@ class Model
         return $db->lastInsertId();
     }
 
-    public function update($key = array(), $value = array(), $id)
+    public function update($key = array(), $id)
     {
         $db = Database::getInstance();
-        $query = "UPDATE {$this->table} SET $key = $value WHERE id = $id";
+        // $key = implode(',', $key);
+        // print_r($key);
+        $key_new = "";
+        foreach ($key as $k => $v) {
+            // $key_new .= " '" . $k . "'" . " = '" . $v . "',";
+            $key_new .= $k . " = '" . $v . "',";
+        }
+        $key_new = rtrim($key_new, ",");
+        // print_r($key_new);
+        // exit();
+        $query = "UPDATE {$this->table} SET $key_new  WHERE id = $id";
+        //echo $query . "\n";
         $stmt = $db->prepare($query);
-        $stmt->execute();
-        return $db->lastInsertId();
+        return $stmt->execute();
     }
 
     public function delete($id)
