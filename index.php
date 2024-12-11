@@ -18,10 +18,10 @@ $router = new Route();
 // $router->dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
 
 // Define routes with middleware
-$router->addRoute('GET', '/login/{param1}/{param2}/{pa}', [LoginController::class, 'demo'], [
+$router->addRoute('GET', '/login/{param1}/{param2}/{pa}', 'LoginController@demo', [
     // AuthMiddleware::class,
     // LoggingMiddleware::class
-]);
+]); //[LoginController::class, 'demo']
 
 // Parse the current URL
 $requestUri = $_SERVER['REQUEST_URI']; //strtok($_SERVER['REQUEST_URI'], '?');

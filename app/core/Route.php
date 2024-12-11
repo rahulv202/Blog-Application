@@ -24,8 +24,8 @@ class Route
 
                 // Define the final action (controller and method invocation)
                 $next = function () use ($route, $matches) {
-                    $controllerClass = "App\\Controllers\\" . $route['callback'][0]; // Fully qualified class name
-                    $action = $route['callback'][1]; // Action method
+                    $controllerClass = "App\\Controllers\\" . explode('@', $route['callback'])[0]; //$route['callback'][0]; // Fully qualified class name
+                    $action = explode('@', $route['callback'])[1]; //$route['callback'][1]; // Action method
 
                     // Check if the controller class exists
                     if (!class_exists($controllerClass)) {
