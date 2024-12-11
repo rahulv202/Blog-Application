@@ -34,6 +34,8 @@ $router->addRoute('GET', '/user-list', 'AdminController@user_list', [AuthAdminRo
 $router->addRoute('GET', '/edit-user/{param}', "AdminController@edit_user_by_id", [AuthAdminRoleMiddleware::class]);
 $router->addRoute('POST', "/edit-user", 'AdminController@edit_user', [AuthAdminRoleMiddleware::class]);
 $router->addRoute('GET', '/delete-user/{param}', 'AdminController@delete_user_by_id', [AuthAdminRoleMiddleware::class]);
+$router->addRoute('GET', '/user-post', 'PostController@index', [LoginCheckMiddleware::class]);
+$router->addRoute('POST', '/save_post', 'PostController@save_post', [LoginCheckMiddleware::class]);
 // Parse the current URL
 $requestUri = $_SERVER['REQUEST_URI']; //strtok($_SERVER['REQUEST_URI'], '?');
 $requestMethod = $_SERVER['REQUEST_METHOD'];
