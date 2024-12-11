@@ -9,7 +9,7 @@ class GuestMiddleware
     {
         if (isset($_SESSION['user_id'])) {
             // Redirect to dashboard
-            header('Location: /');
+            header('Location: /dashboard');
             exit;
         }
 

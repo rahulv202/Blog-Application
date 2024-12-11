@@ -22,7 +22,7 @@ class RegisterController extends Controller
         $user = new Users();
         $result = $user->save(['name', 'email', 'password', 'role'], [$name, $email, password_hash($password, PASSWORD_BCRYPT), $role]);
         if ($result) {
-            $this->redirect('/login');
+            $this->view('login');
         } else {
             $this->view('register', ['error' => 'Registration failed']);
         }
