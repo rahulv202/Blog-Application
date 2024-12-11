@@ -20,12 +20,16 @@ class RegisterController extends Controller
         $role = $_POST['role'];
 
         $user = new Users();
-        $result = $user->save(['name', 'email', 'password', 'role'], [$name, $email, password_hash($password, PASSWORD_BCRYPT), $role]);
-        if ($result) {
-            // $this->view('login');
-            $this->redirect('/login');
+        if (empty($user->find('email', $email))) {
+            $result = $user->save(['name', 'email', 'password', 'role'], [$name, $email, password_hash($password, PASSWORD_BCRYPT), $role]);
+            if ($result) {
+                // $this->view('login');
+                $this->redirect('/login');
+            } else {
+                $this->view('register', ['error' => 'Registration failed']);
+            }
         } else {
-            $this->view('register', ['error' => 'Registration failed']);
+            $this->view('register', ['error' => 'User already exists']); //Email
         }
     }
 }
