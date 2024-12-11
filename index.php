@@ -6,6 +6,7 @@ require_once APP_Root . '/vendor/autoload.php';
 session_start();
 
 use App\Core\Route;
+use App\middleware\GuestMiddleware;
 
 
 $router = new Route();
@@ -22,7 +23,7 @@ $router->addRoute('GET', '/login/{param1}/{param2}/{pa}', 'LoginController@demo'
     // AuthMiddleware::class,
     // LoggingMiddleware::class
 ]); //[LoginController::class, 'demo']
-
+$router->addRoute('GET', '/register', 'RegisterController@index', [GuestMiddleware::class]);
 // Parse the current URL
 $requestUri = $_SERVER['REQUEST_URI']; //strtok($_SERVER['REQUEST_URI'], '?');
 $requestMethod = $_SERVER['REQUEST_METHOD'];

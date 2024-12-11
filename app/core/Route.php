@@ -53,7 +53,13 @@ class Route
                 foreach (array_reverse($middlewareStack) as $middleware) {
                     $next = function () use ($middleware, $requestUri, $requestMethod, $next) {
                         $middlewareInstance = new $middleware();
-                        return $middlewareInstance->handle($requestUri, $requestMethod, $next);
+                        // print_r($requestUri);
+                        // echo "<br><br>";
+                        // print_r($requestMethod);
+                        // echo "<br><br>";
+                        // print_r($next);
+                        // echo "<br><br>";
+                        return $middlewareInstance->handle($requestUri,  $next); //$requestMethod,
                     };
                 }
 
