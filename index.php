@@ -6,6 +6,7 @@ require_once APP_Root . '/vendor/autoload.php';
 session_start();
 
 use App\Core\Route;
+use App\Middleware\AuthAdminRoleMiddleware;
 use App\middleware\GuestMiddleware;
 use App\Middleware\LoginCheckMiddleware;
 
@@ -29,6 +30,7 @@ $router->addRoute('POST', '/register', 'RegisterController@register', [GuestMidd
 $router->addRoute('POST', '/login', 'LoginController@login', [GuestMiddleware::class]);
 $router->addRoute('GET', '/dashboard', 'DashboardController@index', [LoginCheckMiddleware::class]);
 $router->addRoute('GET', '/logout', 'DashboardController@logout', [LoginCheckMiddleware::class]);
+$router->addRoute('GET', '/user-list', 'AdminController@user_list', [AuthAdminRoleMiddleware::class]);
 // Parse the current URL
 $requestUri = $_SERVER['REQUEST_URI']; //strtok($_SERVER['REQUEST_URI'], '?');
 $requestMethod = $_SERVER['REQUEST_METHOD'];
