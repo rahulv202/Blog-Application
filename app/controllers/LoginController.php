@@ -42,8 +42,4 @@ class LoginController extends Controller
             $this->view('login', ['error' => 'Invalid Email And Password']);
         }
     }
-    public function demo($param1, $param2, $param3)
-    {
-        echo "Demo method called with params: $param1, $param2, $param3";
-    }
 }

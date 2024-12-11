@@ -52,10 +52,12 @@ class Model
     public function delete($id)
     {
         $db = Database::getInstance();
-        $query = "DELETE FROM {$this->table} WHERE id = $id";
+        $query = "DELETE FROM {$this->table} WHERE id = {$id}";
+        // echo $query . "<br>";
+        // exit();
         $stmt = $db->prepare($query);
-        $stmt->execute();
-        return $stmt->rowCount();
+        return $stmt->execute();
+        // return $stmt->rowCount();
     }
 
     public function getAllData()

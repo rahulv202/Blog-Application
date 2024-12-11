@@ -1,5 +1,6 @@
 <div class="container mt-5">
     <h1 class="mb-4">All Users</h1>
+    <?php if (!empty($error)) echo "<div class='alert alert-danger'>{$error}</div>"; ?>
     <table class="table table-bordered">
         <thead class="thead-light">
             <tr>

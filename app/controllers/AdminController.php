@@ -32,4 +32,16 @@ class AdminController extends Controller
             $this->view('/edit-user/' . $_POST['id'], ['error' => 'User Data Not Updated']);
         }
     }
+
+    public function delete_user_by_id($id)
+    {
+        $users = new Users();
+        if ($users->delete($id)) {
+            $this->redirect('/user-list');
+            // header('Location: /user-list');
+            // exit();
+        } else {
+            $this->view('/user-list', ['error' => 'User Not Deleted']);
+        }
+    }
 }
