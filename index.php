@@ -7,7 +7,7 @@ session_start();
 
 use App\Core\Route;
 use App\middleware\GuestMiddleware;
-
+use App\Middleware\LoginCheckMiddleware;
 
 $router = new Route();
 // Define routes
@@ -27,6 +27,8 @@ $router->addRoute('GET', '/register', 'RegisterController@index', [GuestMiddlewa
 $router->addRoute('GET', '/login', 'LoginController@index', [GuestMiddleware::class]);
 $router->addRoute('POST', '/register', 'RegisterController@register', [GuestMiddleware::class]);
 $router->addRoute('POST', '/login', 'LoginController@login', [GuestMiddleware::class]);
+$router->addRoute('GET', '/dashboard', 'DashboardController@index', [LoginCheckMiddleware::class]);
+$router->addRoute('GET', '/logout', 'DashboardController@logout', [LoginCheckMiddleware::class]);
 // Parse the current URL
 $requestUri = $_SERVER['REQUEST_URI']; //strtok($_SERVER['REQUEST_URI'], '?');
 $requestMethod = $_SERVER['REQUEST_METHOD'];
