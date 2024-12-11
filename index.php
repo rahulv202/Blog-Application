@@ -25,6 +25,7 @@ $router->addRoute('GET', '/login/{param1}/{param2}/{pa}', 'LoginController@demo'
 ]); //[LoginController::class, 'demo']
 $router->addRoute('GET', '/register', 'RegisterController@index', [GuestMiddleware::class]);
 $router->addRoute('GET', '/login', 'LoginController@index', [GuestMiddleware::class]);
+$router->addRoute('POST', '/register', 'RegisterController@register', [GuestMiddleware::class]);
 // Parse the current URL
 $requestUri = $_SERVER['REQUEST_URI']; //strtok($_SERVER['REQUEST_URI'], '?');
 $requestMethod = $_SERVER['REQUEST_METHOD'];
