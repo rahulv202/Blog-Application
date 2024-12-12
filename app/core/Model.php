@@ -60,10 +60,15 @@ class Model
         // return $stmt->rowCount();
     }
 
-    public function getAllData()
+    public function getAllData($where = null)
     {
         $db = Database::getInstance();
-        $query = "SELECT * FROM {$this->table}";
+        if ($where) {
+            $query = "SELECT * FROM {$this->table} WHERE {$where}";
+        } else {
+            $query = "SELECT * FROM {$this->table}";
+        }
+        //$query = "SELECT * FROM {$this->table}";
         $stmt = $db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
