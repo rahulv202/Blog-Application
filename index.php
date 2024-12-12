@@ -38,6 +38,10 @@ $router->addRoute('GET', '/user-post', 'PostController@index', [LoginCheckMiddle
 $router->addRoute('POST', '/save_post', 'PostController@save_post', [LoginCheckMiddleware::class]);
 $router->addRoute('GET', '/all-post-list', 'PostController@all_post_list', [AuthAdminRoleMiddleware::class]);
 $router->addRoute('GET', '/approve-post/{param}', 'PostController@approve_post', [AuthAdminRoleMiddleware::class]);
+$router->addRoute('GET', '/user-post-manage', 'PostController@user_post_manage', [LoginCheckMiddleware::class]);
+$router->addRoute('GET', '/user-post-edit/{param}', 'PostController@user_post_edit', [LoginCheckMiddleware::class]);
+$router->addRoute('POST', '/update_user_post', 'PostController@update_user_post', [LoginCheckMiddleware::class]);
+$router->addRoute('GET', '/user-post-delete/{param}', 'PostController@user_post_delete', [LoginCheckMiddleware::class]);
 // Parse the current URL
 $requestUri = $_SERVER['REQUEST_URI']; //strtok($_SERVER['REQUEST_URI'], '?');
 $requestMethod = $_SERVER['REQUEST_METHOD'];
