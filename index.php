@@ -42,6 +42,8 @@ $router->addRoute('GET', '/user-post-manage', 'PostController@user_post_manage',
 $router->addRoute('GET', '/user-post-edit/{param}', 'PostController@user_post_edit', [LoginCheckMiddleware::class]);
 $router->addRoute('POST', '/update_user_post', 'PostController@update_user_post', [LoginCheckMiddleware::class]);
 $router->addRoute('GET', '/user-post-delete/{param}', 'PostController@user_post_delete', [LoginCheckMiddleware::class]);
+$router->addroute('GET', '/', 'HomeController@index', []);
+$router->addRoute('GET', '/{param}', 'HomeController@get_post_by_id', []);
 // Parse the current URL
 $requestUri = $_SERVER['REQUEST_URI']; //strtok($_SERVER['REQUEST_URI'], '?');
 $requestMethod = $_SERVER['REQUEST_METHOD'];
