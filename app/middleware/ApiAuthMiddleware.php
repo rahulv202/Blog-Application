@@ -33,19 +33,19 @@ class ApiAuthMiddleware
             // exit();
             $this->jwtUtil->verify($token, $logoutTime[0]['logout_time']);
             //$request['user'] = $decoded;
-            if ($decoded->role == 'admin') {
-                $Admin_url = array('/user-list', '/edit-user', '/delete-user', '/all-post-list', '/approve-post');
-                // print_r($requestUri);
-                // echo explode('/', $requestUri)[2];
-                // exit();
-                if (in_array(('/' . explode('/', $requestUri)[2]), $Admin_url) && $decoded->role == 'admin') {
-                    $next($requestUri);
-                } else {
-                    http_response_code(401);
-                    echo json_encode(['message' => 'Unauthorized']);
-                    return;
-                }
+            //if ($decoded->role == 'admin') {
+            $Admin_url = array('/user-list', '/edit-user', '/delete-user', '/all-post-list', '/approve-post');
+            // print_r($requestUri);
+            // echo explode('/', $requestUri)[2];
+            // exit();
+            if (in_array(('/' . explode('/', $requestUri)[2]), $Admin_url) && $decoded->role == 'admin') {
+                $next($requestUri);
+            } elseif (in_array(('/' . explode('/', $requestUri)[2]), $Admin_url) && $decoded->role == 'user') {
+                http_response_code(401);
+                echo json_encode(['message' => 'Unauthorized']);
+                return;
             }
+            //}
         } catch (\Exception $e) {
             http_response_code(401);
             echo json_encode(['message' => $e->getMessage()]);

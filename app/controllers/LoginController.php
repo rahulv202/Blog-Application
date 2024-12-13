@@ -26,14 +26,15 @@ class LoginController extends Controller
         $password = $_POST['password'];
 
         $user = new Users();
-        $user = $user->find('email', $email);
+        $users = $user->find('email', $email);
         // print_r($user);
         // die;
-        if (!empty($user)) {
-            if (password_verify($password, $user['password'])) {
+        if (!empty($users)) {
+            if (password_verify($password, $users['password'])) {
                 // Authenticate the user
                 if (strpos($_SERVER['REQUEST_URI'], '/api/') === 0) {
-                    $token = $this->jwtUtil->generateToken(['id' => $user['id'], 'role' => $user['role']]);
+                    $data = $user->updateLogoutTimeRomve($users['id']);
+                    $token = $this->jwtUtil->generateToken(['id' => $users['id'], 'role' => $users['role']]);
                     //echo json_encode(['token' => $token, 'message' => 'Login successful']);
                     http_response_code(200);
                     header('Content-Type: application/json');
@@ -41,13 +42,13 @@ class LoginController extends Controller
                 } else {
                     // Store user information in session variables
                     $_SESSION['is_logged_in'] = true;
-                    $_SESSION['user_id'] = $user['id'];
-                    $_SESSION['user_name'] = $user['name'];
-                    $_SESSION['user_email'] = $user['email'];
-                    $_SESSION['user_id'] = $user['id'];
-                    $_SESSION['user_name'] = $user['name'];
-                    $_SESSION['user_email'] = $user['email'];
-                    $_SESSION['role'] = $user['role']; //user_role
+                    $_SESSION['user_id'] = $users['id'];
+                    $_SESSION['user_name'] = $users['name'];
+                    $_SESSION['user_email'] = $users['email'];
+                    $_SESSION['user_id'] = $users['id'];
+                    $_SESSION['user_name'] = $users['name'];
+                    $_SESSION['user_email'] = $users['email'];
+                    $_SESSION['role'] = $users['role']; //user_role
                     //$this->view('dashboard');
                     $this->redirect('/dashboard');
                 }

@@ -79,7 +79,13 @@ class PostController extends Controller
     {
         $post = new Post();
         $post_data = $post->find('id', $id);
-        $this->view('user_post_edit', ['post_data' => $post_data]);
+        if (strpos($_SERVER['REQUEST_URI'], '/api/') === 0) {
+            http_response_code(200);
+            header('Content-Type: application/json');
+            echo json_encode(['post_data' => $post_data]);
+        } else {
+            $this->view('user_post_edit', ['post_data' => $post_data]);
+        }
     }
 
     public function update_user_post()
@@ -91,9 +97,21 @@ class PostController extends Controller
         $data = ['post_title' => $title, 'post_metadata' => $metadata, 'post_content' => $content, 'post_approval' => 0];
         $post = new Post();
         if ($post->update($data, $post_id)) {
-            $this->redirect('/user-post-manage');
+            if (strpos($_SERVER['REQUEST_URI'], '/api/') === 0) {
+                http_response_code(200);
+                header('Content-Type: application/json');
+                echo json_encode(['message' => 'Post Updated successful']);
+            } else {
+                $this->redirect('/user-post-manage');
+            }
         } else {
-            $this->view('/user-post-edit/' . $post_id, ['error' => 'Post Not Updated']);
+            if (strpos($_SERVER['REQUEST_URI'], '/api/') === 0) {
+                http_response_code(401);
+                header('Content-Type: application/json');
+                echo json_encode(['error' => 'Post Not Updated']);
+            } else {
+                $this->view('/user-post-edit/' . $post_id, ['error' => 'Post Not Updated']);
+            }
         }
     }
 
@@ -101,9 +119,21 @@ class PostController extends Controller
     {
         $post = new Post();
         if ($post->delete($id)) {
-            $this->redirect('/user-post-manage');
+            if (strpos($_SERVER['REQUEST_URI'], '/api/') === 0) {
+                http_response_code(200);
+                header('Content-Type: application/json');
+                echo json_encode(['message' => 'Post Deleted successful']);
+            } else {
+                $this->redirect('/user-post-manage');
+            }
         } else {
-            $this->view('/user-post-edit/' . $id, ['error' => 'Post Not Deleted']);
+            if (strpos($_SERVER['REQUEST_URI'], '/api/') === 0) {
+                http_response_code(401);
+                header('Content-Type: application/json');
+                echo json_encode(['error' => 'Post Not Deleted']);
+            } else {
+                $this->view('/user-post-edit/' . $id, ['error' => 'Post Not Deleted']);
+            }
         }
     }
 }

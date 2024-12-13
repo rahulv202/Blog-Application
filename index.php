@@ -45,12 +45,24 @@ $router->addRoute('GET', '/{param}', 'HomeController@get_post_by_id', []);
 // API route with ApiAuthMiddleware
 $router->addRoute('POST', '/api/login', 'LoginController@login', []);
 $router->addRoute('POST', '/api/register', 'RegisterController@register', []);
+// API route Admin
 $router->addRoute('GET', '/api/user-list', 'AdminController@user_list', [ApiAuthMiddleware::class]);
 $router->addRoute('GET', '/api/edit-user/{param}', "AdminController@edit_user_by_id", [ApiAuthMiddleware::class]);
 $router->addRoute('POST', "/api/edit-user", 'AdminController@edit_user', [ApiAuthMiddleware::class]);
 $router->addRoute('GET', '/api/delete-user/{param}', 'AdminController@delete_user_by_id', [ApiAuthMiddleware::class]);
 $router->addRoute('GET', '/api/all-post-list', 'PostController@all_post_list', [ApiAuthMiddleware::class]);
 $router->addRoute('GET', '/api/approve-post/{param}', 'PostController@approve_post', [ApiAuthMiddleware::class]);
+// API routes User
+//$router->addRoute('GET', '/api/dashboard', 'DashboardController@index', [ApiAuthMiddleware::class]);
+//$router->addRoute('GET', '/api/user-post', 'PostController@index', [ApiAuthMiddleware::class]);
+//$router->addRoute('POST', '/api/save_post', 'PostController@save_post', [ApiAuthMiddleware::class]);
+//$router->addRoute('GET', '/api/user-post-manage', 'PostController@user_post_manage', [ApiAuthMiddleware::class]);
+$router->addRoute('GET', '/api/user-post-edit/{param}', 'PostController@user_post_edit', [ApiAuthMiddleware::class]);
+$router->addRoute('POST', '/api/update_user_post', 'PostController@update_user_post', [ApiAuthMiddleware::class]);
+$router->addRoute('GET', '/api/user-post-delete/{param}', 'PostController@user_post_delete', [ApiAuthMiddleware::class]);
+$router->addroute('GET', '/api/', 'HomeController@index', []);
+$router->addRoute('GET', '/api/{param}', 'HomeController@get_post_by_id', []);
+$router->addRoute('POST', '/api/logout', 'DashboardController@logout', [ApiAuthMiddleware::class]);
 
 // Parse the current URL
 $requestUri = $_SERVER['REQUEST_URI']; //strtok($_SERVER['REQUEST_URI'], '?');
