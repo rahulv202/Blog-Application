@@ -73,13 +73,43 @@ class Model
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function getDataColumnName($key = array())
+    public function getDataColumnName($key = array(), $where = null)
     {
         $db = Database::getInstance();
         $key = implode(',', $key);
-        $query = "SELECT $key FROM {$this->table}";
+        if ($where) {
+            $query = "SELECT $key FROM {$this->table} WHERE {$where}";
+        } else {
+            $query = "SELECT $key FROM {$this->table}";
+        }
+        //$query = "SELECT $key FROM {$this->table}";
         $stmt = $db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function updateLogoutTime($userId)
+    {
+        //$this->db->query("UPDATE {$this->table} SET logout_time = NOW() WHERE id = $userId");
+        $db = Database::getInstance();
+        $query = "UPDATE {$this->table} SET logout_time = NOW() WHERE id = $userId";
+        //echo $query . "\n";
+        $stmt = $db->prepare($query);
+        return $stmt->execute();
+    }
+
+    public function updateLogoutTimeRomve($userId)
+    {
+        //$this->db->query("UPDATE {$this->table} SET logout_time = null WHERE id = $userId");
+        $db = Database::getInstance();
+        $query = "UPDATE {$this->table} SET logout_time = null WHERE id = $userId";
+        //echo $query . "\n";
+        $stmt = $db->prepare($query);
+        return $stmt->execute();
+    }
+
+    // public function getLogoutTime($userId)
+    // {
+    //     return $this->db->query("SELECT logout_time FROM {$this->table} WHERE id = $userId")->fetchColumn();
+    // } //getDataColumnName
 }

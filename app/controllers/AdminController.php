@@ -11,7 +11,13 @@ class AdminController extends Controller
     public function user_list()
     {
         $users = new Users();
-        $this->view('user_list', ['users' => $users->getAllData()]);
+        if (strpos($_SERVER['REQUEST_URI'], '/api/') === 0) {
+            http_response_code(200);
+            header('Content-Type: application/json');
+            echo json_encode(['users' => $users->getAllData()]);
+        } else {
+            $this->view('user_list', ['users' => $users->getAllData()]);
+        }
     }
 
     public function edit_user_by_id($id)

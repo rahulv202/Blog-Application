@@ -4,9 +4,17 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Models\Users;
+use App\Utils\JWTUtil;
 
 class LoginController extends Controller
 {
+    private $jwtUtil;
+
+    public function __construct()
+    {
+
+        $this->jwtUtil = new JWTUtil(CONFIG); //$jwtConfig['jwt']
+    }
     public function index()
     {
         $this->view('login');
@@ -24,22 +32,44 @@ class LoginController extends Controller
         if (!empty($user)) {
             if (password_verify($password, $user['password'])) {
                 // Authenticate the user
-                // Store user information in session variables
-                $_SESSION['is_logged_in'] = true;
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['user_name'] = $user['name'];
-                $_SESSION['user_email'] = $user['email'];
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['user_name'] = $user['name'];
-                $_SESSION['user_email'] = $user['email'];
-                $_SESSION['role'] = $user['role']; //user_role
-                //$this->view('dashboard');
-                $this->redirect('/dashboard');
+                if (strpos($_SERVER['REQUEST_URI'], '/api/') === 0) {
+                    $token = $this->jwtUtil->generateToken(['id' => $user['id'], 'role' => $user['role']]);
+                    //echo json_encode(['token' => $token, 'message' => 'Login successful']);
+                    http_response_code(200);
+                    header('Content-Type: application/json');
+                    echo json_encode(['token' => $token, 'message' => 'Login successful']);
+                } else {
+                    // Store user information in session variables
+                    $_SESSION['is_logged_in'] = true;
+                    $_SESSION['user_id'] = $user['id'];
+                    $_SESSION['user_name'] = $user['name'];
+                    $_SESSION['user_email'] = $user['email'];
+                    $_SESSION['user_id'] = $user['id'];
+                    $_SESSION['user_name'] = $user['name'];
+                    $_SESSION['user_email'] = $user['email'];
+                    $_SESSION['role'] = $user['role']; //user_role
+                    //$this->view('dashboard');
+                    $this->redirect('/dashboard');
+                }
             } else {
-                $this->view('login', ['error' => 'Invalid password']);
+                if (strpos($_SERVER['REQUEST_URI'], '/api/') === 0) {
+                    http_response_code(401);
+                    header('Content-Type: application/json');
+                    echo json_encode(['error' => 'Invalid password.']);
+                    return;
+                } else {
+                    $this->view('login', ['error' => 'Invalid password']);
+                }
             }
         } else {
-            $this->view('login', ['error' => 'Invalid Email And Password']);
+            if (strpos($_SERVER['REQUEST_URI'], '/api/') === 0) {
+                http_response_code(401);
+                header('Content-Type: application/json');
+                echo json_encode(['error' => 'Invalid Email And Password']);
+                return;
+            } else {
+                $this->view('login', ['error' => 'Invalid Email And Password']);
+            }
         }
     }
 }
