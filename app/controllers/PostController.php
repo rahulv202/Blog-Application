@@ -36,7 +36,13 @@ class PostController extends Controller
         $posts = $post->getAllData('post_approval=0');
         $users = new Users();
         $user = $users->getAllData();
-        $this->view('all_post_list', ['posts' => $posts, 'users' => $user]);
+        if (strpos($_SERVER['REQUEST_URI'], '/api/') === 0) {
+            http_response_code(200);
+            header('Content-Type: application/json');
+            echo json_encode(['posts' => $posts, 'users' => $user]);
+        } else {
+            $this->view('all_post_list', ['posts' => $posts, 'users' => $user]);
+        }
     }
 
     public function approve_post($id)
@@ -44,9 +50,21 @@ class PostController extends Controller
         $post = new Post();
         $data = ['post_approval' => 1];
         if ($post->update($data, $id)) {
-            $this->redirect('/all-post-list');
+            if (strpos($_SERVER['REQUEST_URI'], '/api/') === 0) {
+                http_response_code(200);
+                header('Content-Type: application/json');
+                echo json_encode(['message' => 'Post Approved successful']);
+            } else {
+                $this->redirect('/all-post-list');
+            }
         } else {
-            $this->view('/all-post-list', ['error' => 'Post Not Approved']);
+            if (strpos($_SERVER['REQUEST_URI'], '/api/') === 0) {
+                http_response_code(401);
+                header('Content-Type: application/json');
+                echo json_encode(['error' => 'Post Not Approved']);
+            } else {
+                $this->view('/all-post-list', ['error' => 'Post Not Approved']);
+            }
         }
     }
 

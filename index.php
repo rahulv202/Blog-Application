@@ -46,6 +46,11 @@ $router->addRoute('GET', '/{param}', 'HomeController@get_post_by_id', []);
 $router->addRoute('POST', '/api/login', 'LoginController@login', []);
 $router->addRoute('POST', '/api/register', 'RegisterController@register', []);
 $router->addRoute('GET', '/api/user-list', 'AdminController@user_list', [ApiAuthMiddleware::class]);
+$router->addRoute('GET', '/api/edit-user/{param}', "AdminController@edit_user_by_id", [ApiAuthMiddleware::class]);
+$router->addRoute('POST', "/api/edit-user", 'AdminController@edit_user', [ApiAuthMiddleware::class]);
+$router->addRoute('GET', '/api/delete-user/{param}', 'AdminController@delete_user_by_id', [ApiAuthMiddleware::class]);
+$router->addRoute('GET', '/api/all-post-list', 'PostController@all_post_list', [ApiAuthMiddleware::class]);
+$router->addRoute('GET', '/api/approve-post/{param}', 'PostController@approve_post', [ApiAuthMiddleware::class]);
 
 // Parse the current URL
 $requestUri = $_SERVER['REQUEST_URI']; //strtok($_SERVER['REQUEST_URI'], '?');
