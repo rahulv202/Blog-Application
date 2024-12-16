@@ -86,8 +86,8 @@ composer require firebase/php-jwt
 ### Configure Environment:
 Update config/config.php with your database credentials.
 Database Migration:
-Database Name: authdb
-Import the users.sql file into your MySQL database.
+Database Name: blog_app
+Import the blog_app.sql file into your MySQL database.
 ### Start the Server:
 ```bash
 php -S localhost:8000 -t public
